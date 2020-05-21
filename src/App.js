@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import styled, { css, createGlobalStyle, keyframes } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import theme from "./theme";
 
 createGlobalStyle`
   body{
@@ -7,59 +8,41 @@ createGlobalStyle`
     margin:0;
   }
 `;
+const Card = styled.div`
+  background-color: red;
+`;
 
-class App extends Component {
-  render() {
-    return (
-      <Container>
-        <Button>Hello</Button>
-        <Button danger rotationTime={0.3}>
-          Hello
-        </Button>
-        <Anchor href="http://google.com">Go to google</Anchor>
-      </Container>
-    );
-  }
-}
 const Container = styled.div`
   height: 100vh;
   width: 100%;
   background-color: pink;
+  ${Card} {
+    background-color: blue;
+  }
 `;
 
 const Button = styled.button`
-  border-radius: 50px;
-  padding: 5px;
-  min-width: 120px;
-  color: white;
-  font-weight: 600;
-  appearance: none;
-  cursor: pointer;
-  &:active,
-  &:focus {
-    outline: none;
+  border-radius: 30px;
+  padding: 25px 15px;
+  background-color: ${(props) => props.theme.mainColor};
+`;
+
+class App extends Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Form />
+        </Container>
+      </ThemeProvider>
+    );
   }
-  background-color: ${(props) => (props.danger ? "#e74c3c" : "lightgreen")};
-  ${(props) => {
-    if (props.danger) {
-      return css`
-        animation: ${rotation} ${props.rotationTime}s linear infinite;
-      `;
-    }
-  }}
-`;
+}
 
-const Anchor = styled(Button.withComponent("a"))`
-  text-decoration: none;
-`;
-
-const rotation = keyframes`
-    from{
-      transform: rotate(0deg);
-    }
-    to{
-       transform: rotate(360deg);
-    }
-  `;
+const Form = () => (
+  <Card>
+    <Button>Hello</Button>
+  </Card>
+);
 
 export default App;
